@@ -1,0 +1,4 @@
+{
+  "region": "us-east-1",
+  "allowedDbOperations": ["put", "delete", "update", "get", "scan"]
+}

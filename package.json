@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "aws-sdk": "^2.630.0",
+    "is-uuid": "^1.0.2",
+    "uuid": "^7.0.1"
+  },
+  "name": "Library Test API",
+  "version": "1.0.0",
+  "description": "A book library test api",
+  "main": "index.js",
+  "author": "Yoann Gendrey",
+  "license": "MIT"
+}

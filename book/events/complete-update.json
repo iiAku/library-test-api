@@ -1,0 +1,10 @@
+{
+  "pathParameters": {
+    "bookUuid": "00583ded-677e-483e-b0f6-13cbdff27f04"
+  },
+  "body": {
+    "releaseDate": "2020/12/13",
+    "authorName": "Updated author II",
+    "name": "Il était une fois IVII"
+  }
+}

@@ -1,0 +1,87 @@
+service: gnetworks-api-test
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  tableName: ${self:custom.stage}-library
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  environment:
+    TABLE: ${self:custom.stage}-library
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:custom.tableName}'
+
+functions:
+  add:
+    handler: book/add.handler
+    events:
+      - http:
+          path: book/add
+          method: POST
+          cors: true
+
+  update:
+    handler: book/update.handler
+    events:
+      - http:
+          path: book/{bookUuid}/update
+          method: POST
+          cors: true
+
+  delete:
+    handler: book/delete.handler
+    events:
+      - http:
+          path: book/{bookUuid}/delete
+          method: POST
+          cors: true
+
+  list:
+    handler: book/list.handler
+    events:
+      - http:
+          path: books
+          method: get
+          cors: true
+
+  details:
+    handler: book/details.handler
+    events:
+      - http:
+          path: book/{bookUuid}
+          method: GET
+          cors: true
+
+resources:
+  Resources:
+    LibraryTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: uuid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: uuid
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+package:
+  exclude:
+    - .prettierrc
+    - package.json
+    - README.md
+    - '**/events/**'
+    - node_modules/aws-sdk/**
